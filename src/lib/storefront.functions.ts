@@ -188,7 +188,7 @@ export const getStorefront = createServerFn({ method: "GET" })
       logoUrl: (merchant as any).logo_url ?? null,
       themeKey: (merchant as any).theme_key ?? null,
       sectionsConfig: (merchant as any)?.sections_config ?? null,
-      products,
+      products: visibleProducts,
       policies: (polR.data ?? []) as StorefrontPolicy[],
       contacts: (cR.data ?? []) as StorefrontContact[],
       shipping: (shR.data ?? []) as StorefrontShipping[],
