@@ -8,6 +8,7 @@ import {
   promoteOrderState,
   commitOrderState,
   selectionFromOrderState,
+  renderOrderStateStages,
   valueOf,
   stageOf,
 } from "@/lib/order-state";
@@ -130,7 +131,7 @@ describe("chat route wiring", () => {
   it("bounds every AI gateway call so a helper cannot strand the agent run", () => {
     const gatewayCalls = src.split('"https://ai.gateway.lovable.dev/v1/chat/completions"').length - 1;
     const gatewaySignals = src.match(/signal: AbortSignal\.timeout\(/g)?.length ?? 0;
-    expect(gatewayCalls).toBe(4);
+    expect(gatewayCalls).toBe(5);
     expect(gatewaySignals).toBeGreaterThanOrEqual(gatewayCalls);
     expect(src).toContain("signal: AbortSignal.timeout(25_000)");
     expect(src).toContain("signal: AbortSignal.timeout(45_000)");

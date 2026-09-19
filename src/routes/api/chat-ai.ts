@@ -4994,7 +4994,7 @@ export const Route = createFileRoute("/api/chat-ai")({
               // returns identity values verbatim even when malformed (so the
               // agent can ask for a correction), therefore only values that
               // pass the deterministic validators are persisted here.
-              const { validateCustomerName, validateAddress } = await import(
+              const { validateAddress } = await import(
                 "@/lib/order-input-validation"
               );
               const { isValidPhone, samePhone, replyRepeatsPhone } = await import(
@@ -5004,8 +5004,7 @@ export const Route = createFileRoute("/api/chat-ai")({
               const patch: Record<string, unknown> = {};
               if (
                 profile.conversational_name &&
-                !customer.name &&
-                validateCustomerName(profile.conversational_name).ok
+                !customer.name
               )
                 patch.name = profile.conversational_name;
 
