@@ -70,6 +70,10 @@ describe("buildSystemPrompt", () => {
     expect(prompt).toContain('repeat "تمام"');
     expect(prompt).toContain("ORDER IS REGISTERED immediately");
     expect(prompt).toContain("Never ask the customer to send a transfer screenshot");
+    // Honorific rule: every reply must address the customer respectfully.
+    expect(prompt).toContain("EVERY SINGLE REPLY, NO EXCEPTION");
+    expect(prompt).toContain("أستاذة");
+    expect(prompt).not.toContain("never in every reply and never as a filler tic");
   });
 
   it("asks for clarification without forcing هادي onto هودي or suggesting alternatives", () => {
@@ -153,6 +157,7 @@ describe("buildCustomerContext", () => {
     );
     expect(ctx).toContain("اسم المتحدث المسموح استخدامه في مناداته: علياء");
     expect(ctx).toContain("اسم مستلم محتمل ولا يُستخدم لمناداة المتحدث");
+    expect(ctx).toContain("يا أستاذة");
     expect(ctx).toContain("الموبايل: 010");
     expect(ctx).toContain("عدد الطلبات السابقة: 3");
     expect(ctx).toContain("أسلوب التواصل: ودود");
