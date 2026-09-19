@@ -10,12 +10,12 @@ describe("buildActiveOrderStateBlock", () => {
   it("marks every field unknown when nothing is known yet", () => {
     const out = buildActiveOrderStateBlock({});
     expect(out.startsWith(ACTIVE_ORDER_STATE_HEADING)).toBe(true);
-    expect(out).toContain("الاسم: غير معروف");
+    expect(out).toContain("اسم مستلم الطلب: غير معروف");
     expect(out).toContain("الموبايل: غير معروف");
     expect(out).toContain("العنوان: غير معروف");
     expect(out).toContain("طريقة الدفع: غير معروف");
     expect(out).toContain(
-      "الحقول الناقصة فقط: [الاسم، الموبايل، العنوان، المنتج، اللون، المقاس، الكمية، طريقة الدفع]",
+      "الحقول الناقصة فقط: [اسم مستلم الطلب، الموبايل، العنوان، المنتج، اللون، المقاس، الكمية، طريقة الدفع]",
     );
   });
 
@@ -29,7 +29,7 @@ describe("buildActiveOrderStateBlock", () => {
         items: [{ product_name: "هودي بيج", color: "بيج", size: "L", quantity: 2 }],
       },
     });
-    expect(out).toContain("الاسم: منى");
+    expect(out).toContain("اسم مستلم الطلب: منى");
     expect(out).toContain("الموبايل: 01000000000");
     expect(out).toContain("العنوان: المعادي، القاهرة");
     expect(out).toContain("المنتج: هودي بيج | اللون: بيج | المقاس: L | الكمية: 2");
@@ -52,7 +52,7 @@ describe("buildActiveOrderStateBlock", () => {
       customer: { name: "-", phone: "null", address: "" },
       order: { payment_method: "-", items: [{ product_name: "شورت", quantity: 0 }] },
     });
-    expect(out).toContain("الاسم: غير معروف");
+    expect(out).toContain("اسم مستلم الطلب: غير معروف");
     expect(out).toContain("الكمية: غير معروف");
     expect(out).toContain("الموبايل، العنوان");
     expect(out).toContain("الكمية، طريقة الدفع");
@@ -71,6 +71,12 @@ describe("buildActiveOrderStateBlock", () => {
     });
     expect(out).toContain("«متحقق» يعني أن القيمة موجودة في المتجر فقط، وليس أن العميل اختارها");
     expect(out).toContain("لا تنسب أي قيمة للعميل");
+  });
+
+  it("marks the recipient name as order-only and forbids using it to address the speaker", () => {
+    const out = buildActiveOrderStateBlock({ customer: { name: "أحمد علي" } });
+    expect(out).toContain("اسم مستلم الطلب: أحمد علي");
+    expect(out).toContain("ممنوع استخدامه في مناداته");
   });
 
   it("is safe against non-array / non-object items payloads", () => {
