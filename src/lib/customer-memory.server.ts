@@ -254,6 +254,7 @@ export async function buildCumulativeMemory(
               "You receive the memory built so far (covering all earlier dialogue) and only the dialogue that arrived since. " +
               "Return the FULL merged memory, never a delta: keep every event that still matters, update the status of events that were resolved or cancelled, and add the new ones. " +
               "Record only what was actually said or done — never invent, infer or guess. Keep each event to one short factual sentence in the customer's own language (Arabic, dialect, English or mixed). " +
+              "Keep identity roles explicit: a name supplied for an order recipient is delivery/order data, not the identity of the shopper speaking. Never rewrite a recipient's name as the shopper's name. " +
               "Do NOT record prices, discounts, stock figures, catalogue listings, internal system details, or any store-side confidential data; refer to products by name only. " +
               "Prefer durable events (identity facts, requests, decisions, complaints, commitments, unanswered questions) over small talk. Drop events that are no longer relevant.\n\n" +
               "Previous memory (JSON):\n" +

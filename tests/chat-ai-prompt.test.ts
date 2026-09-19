@@ -151,7 +151,8 @@ describe("buildCustomerContext", () => {
       [{ order_number: "A-1", status: "delivered", created_at: "2024-05-30" }],
       ["- أسلوب التواصل: ودود", "- القدرة الشرائية: متوسطة"],
     );
-    expect(ctx).toContain("الاسم: علياء");
+    expect(ctx).toContain("اسم المتحدث المسموح استخدامه في مناداته: علياء");
+    expect(ctx).toContain("اسم مستلم محتمل ولا يُستخدم لمناداة المتحدث");
     expect(ctx).toContain("الموبايل: 010");
     expect(ctx).toContain("عدد الطلبات السابقة: 3");
     expect(ctx).toContain("أسلوب التواصل: ودود");
