@@ -471,6 +471,12 @@ function ProductCard({ product, theme }: { product: StorefrontData["products"][n
   const primary = theme?.primary ?? "hsl(var(--primary))";
   const accent = theme?.accent ?? primary;
   const outOfStock = anyStockInfo && (inStock.length === 0 || (selectedStock ?? 0) <= 0);
+  const alreadyInCart = cart.lines.some(
+    (l) =>
+      l.productId === product.id &&
+      (l.color ?? null) === (color ?? null) &&
+      (l.size ?? null) === (effectiveSize ?? null),
+  );
 
   // Offer shown ON the card (display only — the real price comes from the server).
   const plan = bestOfferPlan(product.offers ?? [], {
@@ -582,8 +588,13 @@ function ProductCard({ product, theme }: { product: StorefrontData["products"][n
             size="sm"
             className="flex-1 text-white"
             style={{ background: primary }}
-            disabled={outOfStock}
+            disabled={outOfStock || alreadyInCart}
             onClick={() => {
+              // The same piece (product + colour + size) is added once only.
+              if (alreadyInCart) {
+                toast.info("تمت الإضافة بالفعل");
+                return;
+              }
               cart.add({
                 productId: product.id, name: product.name,
                 price: unitPrice, currency: product.currency, image: img ?? null,
@@ -592,7 +603,8 @@ function ProductCard({ product, theme }: { product: StorefrontData["products"][n
               toast.success("تمت الإضافة إلى السلة");
             }}
           >
-            <ShoppingCart className="ml-1 h-4 w-4" /> {outOfStock ? "غير متوفر" : "أضف إلى السلة"}
+            <ShoppingCart className="ml-1 h-4 w-4" />{" "}
+            {outOfStock ? "غير متوفر" : alreadyInCart ? "تمت الإضافة بالفعل" : "أضف إلى السلة"}
           </Button>
         </div>
       </div>

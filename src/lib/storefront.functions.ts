@@ -166,6 +166,17 @@ export const getStorefront = createServerFn({ method: "GET" })
       };
     }));
 
+    // A piece that is completely sold out must disappear from the storefront
+    // instead of being displayed as "غير متوفر". Products that carry no stock
+    // information at all are kept, because absent data is not a zero.
+    const visibleProducts = products.filter((p) => {
+      const known = (p.variants ?? []).filter(
+        (v: any) => v && typeof v.stock === "number",
+      );
+      if (known.length === 0) return true;
+      return known.some((v: any) => Number(v.stock) > 0);
+    });
+
     // Enabled payment methods — same source the chat agent uses.
     const { loadEnabledPaymentMethods } = await import("@/lib/merchant-data.server");
     const pmRows = await loadEnabledPaymentMethods(admin as any, userId);
@@ -177,7 +188,7 @@ export const getStorefront = createServerFn({ method: "GET" })
       logoUrl: (merchant as any).logo_url ?? null,
       themeKey: (merchant as any).theme_key ?? null,
       sectionsConfig: (merchant as any)?.sections_config ?? null,
-      products,
+      products: visibleProducts,
       policies: (polR.data ?? []) as StorefrontPolicy[],
       contacts: (cR.data ?? []) as StorefrontContact[],
       shipping: (shR.data ?? []) as StorefrontShipping[],
