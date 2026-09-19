@@ -95,7 +95,7 @@ export function buildActiveOrderStateBlock(input: ActiveOrderStateInput): string
   })();
 
   const fields: Array<{ key: string; label: string; value: string | null }> = [
-    { key: "الاسم", label: "الاسم", value: clean(input.customer?.name) },
+    { key: "اسم مستلم الطلب", label: "اسم مستلم الطلب", value: clean(input.customer?.name) },
     { key: "الموبايل", label: "الموبايل", value: clean(input.customer?.phone) },
     { key: "العنوان", label: "العنوان", value: clean(input.customer?.address) },
     {
@@ -121,7 +121,7 @@ export function buildActiveOrderStateBlock(input: ActiveOrderStateInput): string
 
   const lines: string[] = [
     ACTIVE_ORDER_STATE_HEADING,
-    `الاسم: ${show("الاسم")}`,
+    `اسم مستلم الطلب: ${show("اسم مستلم الطلب")}`,
     `الموبايل: ${show("الموبايل")}`,
     `العنوان: ${show("العنوان")}`,
     `المنتج: ${show("المنتج")} | اللون: ${show("اللون")} | المقاس: ${show("المقاس")} | الكمية: ${show("الكمية")}`,
@@ -169,6 +169,7 @@ export function buildActiveOrderStateBlock(input: ActiveOrderStateInput): string
 
   lines.push(
     `الحقول الناقصة فقط: [${missing.join("، ")}]`,
+    "اسم مستلم الطلب خاص بالتسجيل والتوصيل فقط. ليس اسم الشخص الذي يكتب في المحادثة، وممنوع استخدامه في مناداته. اسم المتحدث لا يؤخذ إلا من بياناته الحوارية المنفصلة.",
     "اسأل عن الحقول الناقصة عند الحاجة للخطوة التالية. الحقل ذو المرحلة «مؤكَّد» أو «منفَّذ» فقط هو اختيار محسوم من العميل ولا يُسأل عنه مجدداً. الحقل «مبدئي» أو «متحقق» لا يجوز تقديمه كاختيار أو ذكرى للعميل؛ استخدمه كاحتمال داخلي فقط واسأل سؤال تأكيد قصيراً عند الحاجة.",
   );
 

@@ -72,6 +72,12 @@ describe("structured order state", () => {
     expect(valueOf(back, "color")).toBe("أسود");
     expect(selectionFromOrderState(back).color).toBe("أسود");
   });
+
+  it("keeps the recipient name as conversation order state", () => {
+    const s = mergeOrderState(emptyOrderState(), { name: "أحمد علي" });
+    expect(valueOf(s, "name")).toBe("أحمد علي");
+    expect(renderOrderStateStages(s)).toContain("اسم مستلم الطلب: أحمد علي (مبدئي)");
+  });
 });
 
 describe("pre-order availability", () => {
@@ -128,5 +134,12 @@ describe("chat route wiring", () => {
     expect(gatewaySignals).toBeGreaterThanOrEqual(gatewayCalls);
     expect(src).toContain("signal: AbortSignal.timeout(25_000)");
     expect(src).toContain("signal: AbortSignal.timeout(45_000)");
+  });
+
+  it("does not backfill the speaker profile or a new order from the other name", () => {
+    expect(src).not.toContain("name: customer.name ?? name");
+    expect(src).not.toContain("name: turnProfile.name ?? customer?.name ?? null");
+    expect(src).toContain("name: turnProfile.order_recipient_name ?? null");
+    expect(src).toContain("patch.name = profile.conversational_name");
   });
 });

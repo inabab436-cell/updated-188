@@ -249,7 +249,7 @@ export function selectionFromOrderState(state: OrderState) {
 /** Compact, human-readable stage list for the agent context. */
 export function renderOrderStateStages(state: OrderState): string[] {
   const labels: Record<OrderStateField, string> = {
-    name: "الاسم",
+    name: "اسم مستلم الطلب",
     phone: "الموبايل",
     address: "العنوان",
     product_name: "المنتج",
