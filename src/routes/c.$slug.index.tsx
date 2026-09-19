@@ -471,6 +471,12 @@ function ProductCard({ product, theme }: { product: StorefrontData["products"][n
   const primary = theme?.primary ?? "hsl(var(--primary))";
   const accent = theme?.accent ?? primary;
   const outOfStock = anyStockInfo && (inStock.length === 0 || (selectedStock ?? 0) <= 0);
+  const alreadyInCart = cart.lines.some(
+    (l) =>
+      l.productId === product.id &&
+      (l.color ?? null) === (color ?? null) &&
+      (l.size ?? null) === (effectiveSize ?? null),
+  );
 
   // Offer shown ON the card (display only — the real price comes from the server).
   const plan = bestOfferPlan(product.offers ?? [], {
